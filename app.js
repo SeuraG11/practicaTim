@@ -3,9 +3,17 @@
 // ============================================================
 const LETRAS = ['A', 'B', 'C', 'D'];
 
+// --- Usuarios (Hardcoded) ---
+const USUARIOS = {
+  "admin": "admin123",
+  "estudiante": "licencia2026",
+  "seura": "practicatim"
+};
+
 // --- Estado global ---
 let estadoApp = {
-  pantallaActual: 'home',
+  usuarioActual: null,
+  pantallaActual: 'login',
   modoJuego: null,         // 'examen' | 'practica' | 'categoria' | 'repaso'
   categoriaFiltro: null,
   preguntasSession: [],
@@ -20,9 +28,13 @@ let estadoApp = {
 };
 
 // --- Persistencia ---
+function getStatsKey() {
+  return 'licenciaB_stats_' + (estadoApp.usuarioActual || 'guest');
+}
+
 function cargarEstadisticas() {
   try {
-    const s = localStorage.getItem('licenciaB_stats');
+    const s = localStorage.getItem(getStatsKey());
     if (s) {
       const data = JSON.parse(s);
       estadoApp.historialExamenes = data.historialExamenes || [];
@@ -34,7 +46,7 @@ function cargarEstadisticas() {
 
 function guardarEstadisticas() {
   try {
-    localStorage.setItem('licenciaB_stats', JSON.stringify({
+    localStorage.setItem(getStatsKey(), JSON.stringify({
       historialExamenes: estadoApp.historialExamenes,
       estadisticasCat: estadoApp.estadisticasCat,
       preguntasFalladas: estadoApp.preguntasFalladas || {}
@@ -463,11 +475,67 @@ function cargarTema() {
   } catch(e) {}
 }
 
+// --- Login / Sesion ---
+function iniciarSesion() {
+  const user = document.getElementById('login-user').value.trim().toLowerCase();
+  const pass = document.getElementById('login-pass').value;
+  const errorMsg = document.getElementById('login-error');
+  
+  if (USUARIOS[user] && USUARIOS[user] === pass) {
+    estadoApp.usuarioActual = user;
+    localStorage.setItem('licenciaB_sesion', user);
+    document.getElementById('home-user-name').textContent = user.charAt(0).toUpperCase() + user.slice(1);
+    errorMsg.style.display = 'none';
+    cargarEstadisticas();
+    actualizarStatsBar();
+    iniciarHome();
+  } else {
+    errorMsg.style.display = 'block';
+    // Trigger shake animation
+    errorMsg.style.animation = 'none';
+    setTimeout(() => errorMsg.style.animation = 'shake 0.4s ease', 10);
+  }
+}
+
+function cerrarSesion() {
+  estadoApp.usuarioActual = null;
+  localStorage.removeItem('licenciaB_sesion');
+  
+  // Limpiar inputs
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
+  document.getElementById('login-error').style.display = 'none';
+  
+  // Limpiar memoria de estadisticas para que no se crucen
+  estadoApp.historialExamenes = [];
+  estadoApp.estadisticasCat = {};
+  estadoApp.preguntasFalladas = {};
+  
+  mostrarPantalla('login');
+}
+
 // --- Event Listeners ---
 document.addEventListener('DOMContentLoaded', () => {
-  cargarEstadisticas();
   cargarTema();
-  actualizarStatsBar();
+  
+  // Verificar sesion activa
+  const sesionGuardada = localStorage.getItem('licenciaB_sesion');
+  if (sesionGuardada && USUARIOS[sesionGuardada]) {
+    estadoApp.usuarioActual = sesionGuardada;
+    document.getElementById('home-user-name').textContent = sesionGuardada.charAt(0).toUpperCase() + sesionGuardada.slice(1);
+    cargarEstadisticas();
+    actualizarStatsBar();
+    iniciarHome();
+  } else {
+    mostrarPantalla('login');
+  }
+
+  // Eventos de login
+  document.getElementById('btn-login').addEventListener('click', iniciarSesion);
+  document.getElementById('login-pass').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') iniciarSesion();
+  });
+  document.getElementById('btn-logout').addEventListener('click', cerrarSesion);
 
   // Tema switcher
   document.querySelectorAll('.theme-btn').forEach(btn => {

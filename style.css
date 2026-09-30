@@ -212,6 +212,20 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 .cat-stat-pct { width: 40px; text-align: right; font-size: 13px; font-weight: 600; color: var(--text); }
 .no-data { text-align: center; color: var(--text3); padding: 40px; font-size: 15px; }
 
+/* ============ LOGIN STYLES ============ */
+#screen-login { display: flex; align-items: center; justify-content: center; }
+.login-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at top right, var(--surface2) 0%, var(--bg) 70%); z-index: 0; }
+.login-card { position: relative; z-index: 1; background: rgba(30, 45, 69, 0.6); backdrop-filter: blur(20px); border: 1px solid var(--border); padding: 40px; border-radius: var(--radius); width: 100%; max-width: 400px; box-shadow: var(--shadow); text-align: center; animation: fadeInUp 0.6s ease both; }
+.login-form { display: flex; flex-direction: column; gap: 20px; text-align: left; }
+.input-group { display: flex; flex-direction: column; gap: 8px; }
+.input-group label { font-size: 14px; color: var(--text2); font-weight: 500; }
+.input-group input { background: var(--bg2); border: 1px solid var(--border); padding: 14px 16px; border-radius: var(--radius-sm); color: var(--text); font-size: 16px; transition: all 0.3s; outline: none; font-family: inherit; }
+.input-group input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--glow2); }
+.login-error { color: var(--danger); font-size: 14px; text-align: center; margin: 0; animation: shake 0.4s ease; }
+.btn-logout { position: absolute; top: 20px; right: 20px; background: transparent; border: 1px solid var(--border); color: var(--text2); padding: 8px 16px; border-radius: 20px; cursor: pointer; transition: all 0.3s; font-size: 13px; font-family: inherit; }
+.btn-logout:hover { background: rgba(255, 68, 68, 0.1); color: var(--danger); border-color: rgba(255, 68, 68, 0.3); }
+
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 @media(max-width:480px) {
   .logo-title { font-size: 32px; }

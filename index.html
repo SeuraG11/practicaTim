@@ -15,15 +15,40 @@
 
 <body class="theme-azul">
   <div id="app">
+    <!-- PANTALLA DE LOGIN -->
+    <screen id="screen-login" class="screen active">
+      <div class="login-bg"></div>
+      <div class="login-card">
+        <div class="logo-area" style="margin-bottom: 30px;">
+          <div class="logo-icon" style="font-size: 50px;">🚗</div>
+          <h1 class="logo-title" style="font-size: 32px;">PracticaTIM<span class="logo-cl">CL</span></h1>
+          <p class="logo-sub">Acceso Exclusivo</p>
+        </div>
+        <div class="login-form">
+          <div class="input-group">
+            <label for="login-user">Usuario</label>
+            <input type="text" id="login-user" placeholder="Ingresa tu usuario" autocomplete="off" />
+          </div>
+          <div class="input-group">
+            <label for="login-pass">Contraseña</label>
+            <input type="password" id="login-pass" placeholder="Ingresa tu clave" />
+          </div>
+          <p id="login-error" class="login-error" style="display: none;">Usuario o contraseña incorrectos.</p>
+          <button class="btn-primary" id="btn-login" style="width: 100%; margin-top: 10px;">Ingresar</button>
+        </div>
+      </div>
+    </screen>
+
     <!-- PANTALLA DE INICIO -->
-    <screen id="screen-home" class="screen active">
+    <screen id="screen-home" class="screen">
       <div class="home-bg"></div>
       <div class="home-content">
         <div class="logo-area">
           <div class="logo-icon">🚗</div>
           <h1 class="logo-title">PracticaTIM<span class="logo-cl">CL</span></h1>
-          <p class="logo-sub">Practica gratis, sin límites, sin pagar</p>
+          <p class="logo-sub">Bienvenido, <span id="home-user-name" style="font-weight: 600; color: var(--accent);"></span></p>
         </div>
+        <button id="btn-logout" class="btn-logout" title="Cerrar Sesión">🚪 Cerrar Sesión</button>
         <div class="stats-bar" id="global-stats-bar">
           <div class="stat-item"><span class="stat-num" id="stat-total-respondidas">0</span><span
               class="stat-lbl">Respondidas</span></div>
