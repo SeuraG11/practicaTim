@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PracticaTIM - Licencia B Chile</title>
+  <meta name="description"
+    content="Practica gratis para tu examen de Licencia B de conducir en Chile. Más de 50 preguntas con modo examen, práctica libre y estadísticas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="theme-azul">
+  <div id="app">
+    <!-- PANTALLA DE INICIO -->
+    <screen id="screen-home" class="screen active">
+      <div class="home-bg"></div>
+      <div class="home-content">
+        <div class="logo-area">
+          <div class="logo-icon">🚗</div>
+          <h1 class="logo-title">PracticaTIM<span class="logo-cl">CL</span></h1>
+          <p class="logo-sub">Practica gratis, sin límites, sin pagar</p>
+        </div>
+        <div class="stats-bar" id="global-stats-bar">
+          <div class="stat-item"><span class="stat-num" id="stat-total-respondidas">0</span><span
+              class="stat-lbl">Respondidas</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat-item"><span class="stat-num" id="stat-total-correctas">0</span><span
+              class="stat-lbl">Correctas</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat-item"><span class="stat-num" id="stat-examenes">0</span><span
+              class="stat-lbl">Exámenes</span></div>
+        </div>
+        <div class="menu-grid">
+          <button class="menu-card exam-card" id="btn-inicio-examen">
+            <div class="menu-card-icon">⏱️</div>
+            <div class="menu-card-text">
+              <h2>Modo Examen</h2>
+              <p>30 preguntas · 30 minutos · necesitas 24/30 para aprobar</p>
+            </div>
+            <div class="menu-card-arrow">→</div>
+          </button>
+          <button class="menu-card practice-card" id="btn-inicio-practica">
+            <div class="menu-card-icon">📚</div>
+            <div class="menu-card-text">
+              <h2>Práctica Libre</h2>
+              <p>Sin tiempo · respuesta inmediata · aprende a tu ritmo</p>
+            </div>
+            <div class="menu-card-arrow">→</div>
+          </button>
+          <button class="menu-card category-card" id="btn-categorias">
+            <div class="menu-card-icon">🗂️</div>
+            <div class="menu-card-text">
+              <h2>Por Categoría</h2>
+              <p>Señales · Normas · Manejo · Seguridad · Mecánica</p>
+            </div>
+            <div class="menu-card-arrow">→</div>
+          </button>
+          <button class="menu-card review-card" id="btn-repaso">
+            <div class="menu-card-icon">🔄</div>
+            <div class="menu-card-text">
+              <h2>Repaso de Errores</h2>
+              <p>Practica solo las preguntas que has fallado</p>
+            </div>
+            <div class="menu-card-arrow">→</div>
+          </button>
+        </div>
+        <div class="theme-switcher" id="theme-switcher">
+          <button class="theme-btn theme-btn-azul active" id="theme-azul" data-theme="azul" title="Tema Azul"></button>
+          <button class="theme-btn theme-btn-rosa" id="theme-rosa" data-theme="rosa" title="Tema Rosa"></button>
+          <button class="theme-btn theme-btn-rojo" id="theme-rojo" data-theme="rojo" title="Tema Rojo"></button>
+        </div>
+        <div class="home-footer">
+          <p>100 preguntas · Basado en el examen oficial del CONASET · Chile 🇨🇱</p>
+        </div>
+      </div>
+    </screen>
+
+    <!-- SELECCIÓN DE CATEGORÍA -->
+    <screen id="screen-categorias" class="screen">
+      <div class="screen-header">
+        <button class="btn-back" id="back-categorias">← Volver</button>
+        <h2>Elegir Categoría</h2>
+      </div>
+      <div class="category-grid" id="category-grid"></div>
+    </screen>
+
+    <!-- PANTALLA DE PREGUNTAS -->
+    <screen id="screen-quiz" class="screen">
+      <div class="quiz-header">
+        <button class="btn-back" id="back-quiz">← Salir</button>
+        <div class="quiz-info">
+          <span id="quiz-mode-label" class="quiz-mode-badge">Examen</span>
+          <span id="quiz-progress-text">Pregunta 1/30</span>
+        </div>
+        <div class="quiz-timer" id="quiz-timer-container" style="display:none">
+          <span class="timer-icon">⏱️</span>
+          <span id="quiz-timer-display">30:00</span>
+        </div>
+      </div>
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+      </div>
+      <div class="quiz-body">
+        <div class="question-category-badge" id="question-category-badge"></div>
+        <h2 class="question-text" id="question-text"></h2>
+        <div class="options-grid" id="options-grid"></div>
+        <div class="explanation-box" id="explanation-box" style="display:none">
+          <div class="explanation-icon">💡</div>
+          <p id="explanation-text"></p>
+        </div>
+        <div class="quiz-nav">
+          <div class="quiz-score-inline" id="quiz-score-inline"></div>
+          <button class="btn-next" id="btn-next-question">Siguiente →</button>
+        </div>
+      </div>
+    </screen>
+
+    <!-- PANTALLA DE RESULTADO -->
+    <screen id="screen-resultado" class="screen">
+      <div class="resultado-content">
+        <div class="resultado-icon" id="resultado-icon">🏆</div>
+        <h1 class="resultado-titulo" id="resultado-titulo">¡Aprobado!</h1>
+        <p class="resultado-subtitulo" id="resultado-subtitulo"></p>
+        <div class="resultado-stats">
+          <div class="res-stat"><span class="res-stat-val" id="res-correctas">-</span><span
+              class="res-stat-lbl">Correctas</span></div>
+          <div class="res-stat"><span class="res-stat-val" id="res-incorrectas">-</span><span
+              class="res-stat-lbl">Incorrectas</span></div>
+          <div class="res-stat"><span class="res-stat-val" id="res-porcentaje">-</span><span
+              class="res-stat-lbl">Porcentaje</span></div>
+        </div>
+        <div class="resultado-barra-wrap">
+          <div class="resultado-barra-track">
+            <div class="resultado-barra-fill" id="resultado-barra-fill"></div>
+            <div class="resultado-barra-min" id="resultado-barra-min"></div>
+          </div>
+          <div class="resultado-barra-labels">
+            <span>0%</span><span>Mínimo 80%</span><span>100%</span>
+          </div>
+        </div>
+        <div class="resultado-actions">
+          <button class="btn-primary" id="btn-volver-inicio">🏠 Inicio</button>
+          <button class="btn-secondary" id="btn-repetir-examen">🔄 Repetir</button>
+        </div>
+      </div>
+    </screen>
+
+    <!-- PANTALLA ESTADÍSTICAS -->
+    <screen id="screen-stats" class="screen">
+      <div class="screen-header">
+        <button class="btn-back" id="back-stats">← Volver</button>
+        <h2>Mis Estadísticas</h2>
+      </div>
+      <div class="stats-content" id="stats-content"></div>
+    </screen>
+  </div>
+
+  <script src="preguntas.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
