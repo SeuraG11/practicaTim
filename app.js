@@ -72,11 +72,14 @@ function registrarRespuesta(preguntaId, categoria, correcta) {
 // --- Navegación de pantallas ---
 function mostrarPantalla(id) {
   const current = document.querySelector('.screen.active');
+  const next = document.getElementById('screen-' + id);
+  if (current === next) return; // Prevent disappearing bug if screen is already active
+
   if (current) {
     current.classList.add('slide-out');
     setTimeout(() => current.classList.remove('active', 'slide-out'), 350);
   }
-  const next = document.getElementById('screen-' + id);
+  
   setTimeout(() => { next.classList.add('active'); }, 50);
   estadoApp.pantallaActual = id;
 }
