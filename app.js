@@ -27,6 +27,44 @@ let estadoApp = {
   estadisticasCat: {}
 };
 
+// --- Modal Helper ---
+function showModal(title, text, type = 'alert', onConfirm = null) {
+  const modal = document.getElementById('custom-modal');
+  const modalTitle = document.getElementById('modal-title');
+  const modalText = document.getElementById('modal-text');
+  const modalIcon = document.getElementById('modal-icon');
+  const btnCancel = document.getElementById('modal-btn-cancel');
+  const btnConfirm = document.getElementById('modal-btn-confirm');
+
+  modalTitle.textContent = title;
+  modalText.textContent = text;
+  
+  if (type === 'alert') {
+    modalIcon.textContent = 'ℹ️';
+    btnCancel.style.display = 'none';
+  } else if (type === 'confirm') {
+    modalIcon.textContent = '⚠️';
+    btnCancel.style.display = 'block';
+  }
+
+  const cleanup = () => {
+    modal.classList.remove('active');
+    btnConfirm.replaceWith(btnConfirm.cloneNode(true));
+    btnCancel.replaceWith(btnCancel.cloneNode(true));
+  };
+
+  document.getElementById('modal-btn-confirm').addEventListener('click', () => {
+    cleanup();
+    if (onConfirm) onConfirm();
+  });
+
+  document.getElementById('modal-btn-cancel').addEventListener('click', () => {
+    cleanup();
+  });
+
+  modal.classList.add('active');
+}
+
 // --- Persistencia ---
 function getStatsKey() {
   return 'licenciaB_stats_' + (estadoApp.usuarioActual || 'guest');
@@ -142,7 +180,7 @@ function iniciarRepaso() {
   const ids = Object.keys(falladas).filter(id => falladas[id] > 0).map(Number);
   let pool = PREGUNTAS.filter(p => ids.includes(p.id));
   if (pool.length === 0) {
-    alert('¡Aún no tienes preguntas falladas para repasar! Primero practica un poco.');
+    showModal('Todo al día', '¡Aún no tienes preguntas falladas para repasar! Primero practica un poco.', 'alert');
     return;
   }
   estadoApp.modoJuego = 'repaso';
@@ -559,7 +597,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Quiz
   document.getElementById('back-quiz').addEventListener('click', () => {
-    if (confirm('Seguro que quieres salir? Perderas el progreso de esta sesion.')) salirQuiz();
+    showModal('¿Salir del intento?', 'Seguro que quieres salir? Perderás el progreso de esta sesión.', 'confirm', () => {
+      salirQuiz();
+    });
   });
   document.getElementById('btn-next-question').addEventListener('click', siguientePregunta);
 
