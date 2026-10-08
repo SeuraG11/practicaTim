@@ -6,7 +6,7 @@ const LETRAS = ['A', 'B', 'C', 'D'];
 // --- Usuarios (Hardcoded) ---
 const USUARIOS = {
   "admin": "admin123",
-  "estudiante": "licencia2026",
+  "tim": "amorcito",
   "seura": "practicatim"
 };
 
@@ -38,7 +38,7 @@ function showModal(title, text, type = 'alert', onConfirm = null) {
 
   modalTitle.textContent = title;
   modalText.textContent = text;
-  
+
   if (type === 'alert') {
     modalIcon.textContent = 'ℹ️';
     btnCancel.style.display = 'none';
@@ -79,7 +79,7 @@ function cargarEstadisticas() {
       estadoApp.estadisticasCat = data.estadisticasCat || {};
       estadoApp.preguntasFalladas = data.preguntasFalladas || {};
     }
-  } catch(e) {}
+  } catch (e) { }
 }
 
 function guardarEstadisticas() {
@@ -89,7 +89,7 @@ function guardarEstadisticas() {
       estadisticasCat: estadoApp.estadisticasCat,
       preguntasFalladas: estadoApp.preguntasFalladas || {}
     }));
-  } catch(e) {}
+  } catch (e) { }
 }
 
 function registrarRespuesta(preguntaId, categoria, correcta) {
@@ -117,7 +117,7 @@ function mostrarPantalla(id) {
     current.classList.add('slide-out');
     setTimeout(() => current.classList.remove('active', 'slide-out'), 350);
   }
-  
+
   setTimeout(() => { next.classList.add('active'); }, 50);
   estadoApp.pantallaActual = id;
 }
@@ -219,7 +219,7 @@ function renderPregunta() {
   // Progreso
   const progress = ((idx + 1) / total) * 100;
   document.getElementById('quiz-progress-fill').style.width = progress + '%';
-  document.getElementById('quiz-progress-text').textContent = `Pregunta ${idx+1}/${total}`;
+  document.getElementById('quiz-progress-text').textContent = `Pregunta ${idx + 1}/${total}`;
 
   // Categoría badge
   const cat = CATEGORIAS[pregunta.categoria];
@@ -352,7 +352,7 @@ function actualizarDisplayTimer() {
   const seg = estadoApp.tiempoRestante % 60;
   const display = document.getElementById('quiz-timer-display');
   const container = document.getElementById('quiz-timer-container');
-  display.textContent = `${String(min).padStart(2,'0')}:${String(seg).padStart(2,'0')}`;
+  display.textContent = `${String(min).padStart(2, '0')}:${String(seg).padStart(2, '0')}`;
   if (estadoApp.tiempoRestante <= 60) {
     container.classList.add('urgent');
   } else {
@@ -441,8 +441,8 @@ function renderCategorias() {
 // --- Pantalla de estadísticas ---
 function renderStats() {
   const content = document.getElementById('stats-content');
-  const totalR = Object.values(estadoApp.estadisticasCat).reduce((a,s) => a + s.respondidas, 0);
-  const totalC = Object.values(estadoApp.estadisticasCat).reduce((a,s) => a + s.correctas, 0);
+  const totalR = Object.values(estadoApp.estadisticasCat).reduce((a, s) => a + s.respondidas, 0);
+  const totalC = Object.values(estadoApp.estadisticasCat).reduce((a, s) => a + s.correctas, 0);
 
   if (totalR === 0) {
     content.innerHTML = '<div class="no-data">📊 Aún no tienes estadísticas.<br>¡Empieza a practicar!</div>';
@@ -454,7 +454,7 @@ function renderStats() {
     <div class="resultado-stats" style="justify-content:center">
       <div class="res-stat"><span class="res-stat-val">${totalR}</span><span class="res-stat-lbl">Total respondidas</span></div>
       <div class="res-stat"><span class="res-stat-val">${totalC}</span><span class="res-stat-lbl">Correctas</span></div>
-      <div class="res-stat"><span class="res-stat-val">${Math.round(totalC/totalR*100)}%</span><span class="res-stat-lbl">Acierto global</span></div>
+      <div class="res-stat"><span class="res-stat-val">${Math.round(totalC / totalR * 100)}%</span><span class="res-stat-lbl">Acierto global</span></div>
     </div>
   </div>
   <div class="stats-section"><h3>Por Categoría</h3>`;
@@ -474,7 +474,7 @@ function renderStats() {
   if (estadoApp.historialExamenes.length > 0) {
     html += `<div class="stats-section"><h3>Últimos Exámenes (${estadoApp.historialExamenes.length} total)</h3>`;
     [...estadoApp.historialExamenes].reverse().slice(0, 5).forEach(ex => {
-      const fecha = new Date(ex.fecha).toLocaleDateString('es-CL', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'});
+      const fecha = new Date(ex.fecha).toLocaleDateString('es-CL', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
       const color = ex.aprobado ? 'var(--success)' : 'var(--danger)';
       const emoji = ex.aprobado ? '✅' : '❌';
       html += `<div class="cat-stat-row" style="margin-bottom:8px">
@@ -506,14 +506,14 @@ function aplicarTema(tema) {
     btn.classList.toggle('active', btn.dataset.theme === tema);
   });
   // Guardar preferencia
-  try { localStorage.setItem('licenciaB_tema', tema); } catch(e) {}
+  try { localStorage.setItem('licenciaB_tema', tema); } catch (e) { }
 }
 
 function cargarTema() {
   try {
     const t = localStorage.getItem('licenciaB_tema');
     if (t && TEMAS.includes(t)) aplicarTema(t);
-  } catch(e) {}
+  } catch (e) { }
 }
 
 // --- Login / Sesion ---
@@ -521,7 +521,7 @@ function iniciarSesion() {
   const user = document.getElementById('login-user').value.trim().toLowerCase();
   const pass = document.getElementById('login-pass').value;
   const errorMsg = document.getElementById('login-error');
-  
+
   if (USUARIOS[user] && USUARIOS[user] === pass) {
     estadoApp.usuarioActual = user;
     localStorage.setItem('licenciaB_sesion', user);
@@ -541,24 +541,24 @@ function iniciarSesion() {
 function cerrarSesion() {
   estadoApp.usuarioActual = null;
   localStorage.removeItem('licenciaB_sesion');
-  
+
   // Limpiar inputs
   document.getElementById('login-user').value = '';
   document.getElementById('login-pass').value = '';
   document.getElementById('login-error').style.display = 'none';
-  
+
   // Limpiar memoria de estadisticas para que no se crucen
   estadoApp.historialExamenes = [];
   estadoApp.estadisticasCat = {};
   estadoApp.preguntasFalladas = {};
-  
+
   mostrarPantalla('login');
 }
 
 // --- Event Listeners ---
 document.addEventListener('DOMContentLoaded', () => {
   cargarTema();
-  
+
   // Verificar sesion activa
   const sesionGuardada = localStorage.getItem('licenciaB_sesion');
   if (sesionGuardada && USUARIOS[sesionGuardada]) {
