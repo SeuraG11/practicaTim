@@ -611,8 +611,8 @@ document.addEventListener('DOMContentLoaded', () => {
     else iniciarPractica(null);
   });
 
-  // Stats (click en logo lleva a stats)
-  document.querySelector('.logo-area').addEventListener('click', () => {
+  // Stats (click en logo de HOME lleva a stats)
+  document.querySelector('#screen-home .logo-area').addEventListener('click', () => {
     renderStats();
     mostrarPantalla('stats');
   });
