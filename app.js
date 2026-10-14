@@ -7,6 +7,7 @@ const LETRAS = ['A', 'B', 'C', 'D'];
 const USUARIOS = {
   "admin": "admin123",
   "tim": "amorcito",
+  "ignacio": "12345",
   "seura": "practicatim"
 };
 
